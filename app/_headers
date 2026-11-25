@@ -1,0 +1,14 @@
+# Cloudflare Pages response headers. The CSP must match the <meta> CSP in index.html
+# (plus frame-ancestors, which only works as a header); tests/headers.test.mjs checks it.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# The worker and its file list must always be revalidated so updates are detected.
+/sw.js
+  Cache-Control: no-cache
+/precache.js
+  Cache-Control: no-cache

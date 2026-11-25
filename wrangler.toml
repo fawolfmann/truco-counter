@@ -1,0 +1,4 @@
+# Cloudflare Pages configuration. Static site only: no bindings, no Functions.
+name = "truco-counter"
+pages_build_output_dir = "./app"
+compatibility_date = "2026-11-25"
