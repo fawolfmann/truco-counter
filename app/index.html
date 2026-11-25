@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>Anotador de Truco</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="description" content="Anotador de truco con fósforos: Nosotros y Ellos, a 15 o 30 puntos.">
+  <meta name="theme-color" content="#0f3b2c">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Truco">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <h1 class="brand">Truco</h1>
+    <div class="topbar-actions">
+      <button type="button" class="icon-btn" id="open-settings" aria-label="Ajustes y nueva partida">
+        <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="table" id="board">
+    <noscript><p class="note">El anotador necesita JavaScript.</p></noscript>
+  </main>
+
+  <footer class="controls" id="controls"></footer>
+
+  <p class="toast" id="toast" role="status" aria-live="polite" hidden></p>
+
+  <dialog class="sheet" id="settings" aria-labelledby="settings-title">
+    <form method="dialog" class="sheet-body" id="settings-form">
+      <h2 id="settings-title">Partida</h2>
+      <label class="field">
+        <span>Equipo 1</span>
+        <input name="nos" maxlength="16" autocomplete="off" enterkeyhint="next">
+      </label>
+      <label class="field">
+        <span>Equipo 2</span>
+        <input name="ellos" maxlength="16" autocomplete="off" enterkeyhint="done">
+      </label>
+      <fieldset class="field segmented">
+        <legend>Se juega a</legend>
+        <label><input type="radio" name="target" value="15"><span>15</span></label>
+        <label><input type="radio" name="target" value="30"><span>30</span></label>
+      </fieldset>
+      <p class="hint" id="target-hint" hidden>Cambiar los puntos borra el historial para deshacer.</p>
+      <div class="sheet-actions">
+        <button type="button" class="btn btn-danger" id="new-game">Nueva partida</button>
+        <button type="submit" class="btn btn-primary" value="save">Listo</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="sheet" id="confirm-new" aria-labelledby="confirm-title">
+    <form method="dialog" class="sheet-body">
+      <h2 id="confirm-title">¿Empezar de cero?</h2>
+      <p>Se borran los puntos de los dos equipos. Los nombres quedan.</p>
+      <div class="sheet-actions">
+        <button type="submit" class="btn" value="cancel">Cancelar</button>
+        <button type="submit" class="btn btn-danger" value="confirm">Borrar puntos</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="sheet sheet-win" id="win" aria-labelledby="win-title">
+    <form method="dialog" class="sheet-body">
+      <p class="win-kicker">¡Ganó!</p>
+      <h2 id="win-title"></h2>
+      <p class="win-score" id="win-score"></p>
+      <div class="sheet-actions">
+        <button type="submit" class="btn" value="undo">Deshacer</button>
+        <button type="submit" class="btn btn-primary" value="again">Otra partida</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

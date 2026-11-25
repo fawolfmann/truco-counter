@@ -1,0 +1,47 @@
+name: check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Tests
+        run: npm test
+
+      - name: Precache list is up to date
+        run: node scripts/build-precache.mjs --check
+
+  # wrangler-action + `pages deploy`, only on main and only after the checks pass.
+  deploy:
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
+    env:
+      PAGES_PROJECT: truco-counter
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy app/ to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # creates the project on the first run; fails harmlessly ("already exists") afterwards
+          preCommands: npx wrangler pages project create "$PAGES_PROJECT" --production-branch=main || true
+          # the output directory (app/) comes from wrangler.toml
+          command: pages deploy --project-name=truco-counter --branch=main
